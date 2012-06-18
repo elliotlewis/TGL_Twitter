@@ -26,7 +26,7 @@ class Tgl_twitter
 	var $limit			= 20;
 	var $parameters		= array();
 	var $months			= array('Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec');
-	var $entities		= array('user_mentions' => FALSE, 'urls' => FALSE, 'hashtags' => FALSE);
+	var $entities		= array('user_mentions' => FALSE, 'urls' => FALSE, 'hashtags' => FALSE, 'media' => FALSE);
 	var $use_stale;
 	
 	/**
@@ -131,7 +131,7 @@ class Tgl_twitter
 				foreach ($val['entities'] as $type => $found)
 				{
 
-					if ( ! isset($this->entities[$type]) ) 
+					if ( ! isset($this->entities[$type]) OR ! $this->entities[$type])
 					{
 						continue;
 					}
@@ -148,6 +148,9 @@ class Tgl_twitter
 								break;
 							case 'urls':			$find[]		= $info['url'];
 													$replace[]	= "<a title='{$info['expanded_url']}' href='{$info['url']}'>{$info['url']}</a>";
+								break;
+							case 'media':			$find[]		= $info['url'];
+													$replace[]	= "<br />{$info['type']}: <a title='{$info['expanded_url']}' href='{$info['url']}'>{$info['url']}</a>";
 						}
 					}
 				}
